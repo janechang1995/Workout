@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>芷昕 & 嘉晏 運動打卡對決 🏃‍♀️</title>
+    <!-- 引入韓系少女風/可愛手寫感字體 -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=ZCOOL+KuaiLe&family=Zen+Maru+Gothic:wght@400;500;700&display=swap">
+    <style>
+        :root {
+            --bg-color: #fcfcfc;
+            --card-bg: #ffffff;
+            --text-primary: #4a4a4a;
+            --text-secondary: #8e8e8e;
+            --accent-pink: #f7d6d8;
+            --accent-green: #d4e7d4;
+            --accent-warning: #fbe3b5;
+            --border-color: #f0f0f0;
+            --shadow: 0 10px 30px rgba(0, 0, 0, 0.03);
+            --radius: 20px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Zen Maru Gothic', 'ZCOOL KuaiLe', sans-serif, system-ui;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 24px 16px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 24px;
+            padding: 20px 0;
+        }
+
+        header h1 {
+            font-size: 1.6rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        header p {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            background: #f5f5f5;
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 20px;
+        }
+
+        .punishment-banner {
+            background-color: #fff9f9;
+            border: 1px dashed var(--accent-pink);
+            border-radius: 16px;
+            padding: 14px 16px;
+            margin-bottom: 24px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: #725252;
+            line-height: 1.5;
+        }
+
+        .punishment-banner span {
+            font-weight: bold;
+            color: #d96a6a;
+        }
+
+        .week-card {
+            background: var(--card-bg);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid var(--border-color);
+        }
+
+        .week-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 12px;
+            margin-bottom: 16px;
+        }
+
+        .week-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #444;
+        }
+
+        .players-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .player-box {
+            background: #fafafa;
+            border-radius: 16px;
+            padding: 14px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 1px solid #f2f2f2;
+            transition: all 0.3s ease;
+        }
+
+        .player-name {
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: #555;
+        }
+
+        .check-group {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+
+        .check-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            border: 2px solid #e0e0e0;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: transparent;
+            transition: all 0.2s ease;
+            user-select: none;
+        }
+
+        .check-btn.active {
+            background: var(--accent-green);
+            border-color: #a8d5a8;
+            color: #4a7c4a;
+            font-weight: bold;
+        }
+
+        .status-tag {
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-weight: 500;
+        }
+
+        .status-pass {
+            background-color: #eaf5ea;
+            color: #437a43;
+        }
+
+        .status-fail {
+            background-color: #ffeef0;
+            color: #c95555;
+        }
+
+        .actions {
+            text-align: center;
+            margin-top: 30px;
+            margin-bottom: 40px;
+        }
+
+        .reset-btn {
+            background: none;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <header>
+        <h1>芷昕 ✖ 嘉晏</h1>
+        <p>✨ 每週運動 3 次打卡挑戰 ✨</p>
+    </header>
+
+    <div class="punishment-banner">
+        ⚠️ <strong>未達標懲罰告示</strong><br>
+        本週沒做滿 3 次，下一週晚餐只能吃<br>
+        <span>🥣 優格</span> 或 <span>🥗 雞肉配菜</span>！
+    </div>
+
+    <div id="weeks-container"></div>
+
+    <div class="actions">
+        <button class="reset-btn" onclick="resetData()">重置所有紀錄</button>
+    </div>
+</div>
+
+<script>
+    const totalWeeks = 8; // 預設提供 8 週紀錄表
+    const players = ['芷昕', '嘉晏'];
+
+    // 從 LocalStorage 載入資料，若無則初始化
+    let store = JSON.parse(localStorage.getItem('workout_tracker_data')) || {};
+
+    function initData() {
+        for (let w = 1; w <= totalWeeks; w++) {
+            if (!store[w]) {
+                store[w] = { '芷昕': 0, '嘉晏': 0 };
+            }
+        }
+    }
+
+    function saveData() {
+        localStorage.setItem('workout_tracker_data', JSON.stringify(store));
+    }
+
+    function toggleCheck(week, player, count) {
+        // 如果點擊已勾選的最後一個，就取消；否則設定為點擊的次數
+        if (store[week][player] === count) {
+            store[week][player] = count - 1;
+        } else {
+            store[week][player] = count;
+        }
+        saveData();
+        render();
+    }
+
+    function render() {
+        const container = document.getElementById('weeks-container');
+        container.innerHTML = '';
+
+        for (let w = 1; w <= totalWeeks; w++) {
+            const weekData = store[w];
+            const card = document.createElement('div');
+            card.className = 'week-card';
+
+            let playersHtml = '';
+            players.forEach(p => {
+                const count = weekData[p] || 0;
+                const isPass = count >= 3;
+                
+                playersHtml += `
+                    <div class="player-box">
+                        <div class="player-name">${p}</div>
+                        <div class="check-group">
+                            <div class="check-btn ${count >= 1 ? 'active' : ''}" onclick="toggleCheck(${w}, '${p}', 1)">✓</div>
+                            <div class="check-btn ${count >= 2 ? 'active' : ''}" onclick="toggleCheck(${w}, '${p}', 2)">✓</div>
+                            <div class="check-btn ${count >= 3 ? 'active' : ''}" onclick="toggleCheck(${w}, '${p}', 3)">✓</div>
+                        </div>
+                        <div class="status-tag ${isPass ? 'status-pass' : 'status-fail'}">
+                            ${isPass ? '🎉 已達標' : `還差 ${3 - count} 次`}
+                        </div>
+                    </div>
+                `;
+            });
+
+            card.innerHTML = `
+                <div class="week-header">
+                    <span class="week-title">WEEK ${w}</span>
+                </div>
+                <div class="players-grid">
+                    ${playersHtml}
+                </div>
+            `;
+
+            container.appendChild(card);
+        }
+    }
+
+    function resetData() {
+        if (confirm('確定要清空所有運動紀錄嗎？')) {
+            localStorage.removeItem('workout_tracker_data');
+            store = {};
+            initData();
+            render();
+        }
+    }
+
+    initData();
+    render();
+</script>
+
+</body>
+</html>
